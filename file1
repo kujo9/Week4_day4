@@ -1,0 +1,11 @@
+CREATE PROCEDURE update_platinum_membership()
+LANGUAGE plpgsql
+AS $update_platinum_membership()$
+BEGIN
+	UPDATE customers
+	SET platinum _member=TRUE
+	WHERE (SELECT SUM(amount)FROM payments
+		   WHERE payments.customer_id = customers.id)>200;
+END;
+$update_platinum_membership()$
+CALL update_platinum_membership();
